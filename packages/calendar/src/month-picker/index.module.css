@@ -1,0 +1,66 @@
+@import '@alfalab/core-components-vars/src/index.css';
+@import '../vars.css';
+
+.component {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-12);
+    width: var(--calendar-width);
+    padding: var(--gap-16);
+    box-sizing: border-box;
+    outline: none;
+
+    @media (max-width: 374px) {
+        width: 100%;
+    }
+
+    &.responsive {
+        width: 100%;
+    }
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-8);
+    min-height: var(--gap-40);
+    padding: var(--gap-4) var(--gap-0);
+    box-sizing: border-box;
+}
+
+:global(.cc-calendar) .header .yearButton {
+    @mixin accent_primary_large;
+
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+/* 4 ряда по 40px с отступами 8px — высота сетки месяцев, список лет прокручивается в ней же */
+.body {
+    height: calc(var(--gap-40) * 4 + var(--gap-8) * 3);
+    overflow: hidden;
+
+    &.customScrollbar {
+        @mixin custom-scrollbar;
+
+        overflow: hidden auto;
+    }
+
+    &.nativeScrollbar {
+        overflow: hidden auto;
+    }
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--gap-8);
+}
+
+:global(.cc-calendar) .grid .item {
+    min-width: 0;
+
+    &[aria-selected='true'] {
+        @mixin accent_primary_medium;
+    }
+}

@@ -1,0 +1,96 @@
+## Выбор месяца
+
+Пресет календаря, в котором нет сетки дней: пользователь сразу видит 12 месяцев открытого года.
+По умолчанию месяц не выбран и открыт текущий год. В шапке всегда отображается только год.
+Стрелки переключают год. Если месяц выбран, он сохраняется: из октября 2026 стрелка назад выберет октябрь 2025.
+Нажатие на год открывает список лет; после выбора года календарь возвращается к месяцам.
+
+Используйте его в фильтрах и формах, где значение — это месяц целиком (например, «выписка за март 2026»).
+Если нужен конкретный день или период из дней — используйте `Calendar`.
+
+В `onChange` приходит timestamp первого дня выбранного месяца.
+
+```jsx live mobileHeight={640}
+render(() => {
+    const [value, setValue] = React.useState();
+
+    const formatted = value
+        ? new Intl.DateTimeFormat('ru-RU', { month: 'long', year: 'numeric' }).format(value)
+        : 'не выбран';
+
+    const calendarStyles = {
+        width: 344,
+        border: '1px solid var(--color-light-neutral-300)',
+        borderRadius: 'var(--calendar-popover-border-radius, var(--border-radius-16))',
+        boxShadow: 'var(--shadow-m)',
+    };
+
+    return (
+        <div>
+            <div style={calendarStyles}>
+                <CalendarMonthPickerDesktop value={value} onChange={setValue} responsive={true} />
+            </div>
+            <p style={{ marginTop: 32 }}>Выбранный месяц: {formatted}</p>
+        </div>
+    );
+});
+```
+
+## Ограничение диапазона
+
+Месяцы за пределами `minDate` и `maxDate` заблокированы, а стрелки не дают уйти за доступные годы.
+Если при переключении года выбранный месяц выходит за границы, выбирается ближайший доступный.
+Например, фильтр по уже прошедшим месяцам за последние два года:
+
+```jsx live mobileHeight={640}
+render(() => {
+    const [value, setValue] = React.useState();
+
+    const now = new Date();
+    const minDate = new Date(now.getFullYear() - 2, now.getMonth(), 1).getTime();
+
+    return (
+        <div
+            style={{
+                width: 344,
+                border: '1px solid var(--color-light-neutral-300)',
+                borderRadius: 'var(--calendar-popover-border-radius, var(--border-radius-16))',
+                boxShadow: 'var(--shadow-m)',
+            }}
+        >
+            <CalendarMonthPickerDesktop
+                value={value}
+                onChange={setValue}
+                minDate={minDate}
+                maxDate={now.getTime()}
+                responsive={true}
+            />
+        </div>
+    );
+});
+```
+
+## Мобильная версия
+
+На мобильных устройствах календарь открывается в модальном окне с кнопками «Сбросить» и «Выбрать».
+
+```jsx live mobileOnly mobileHeight={640}
+render(() => {
+    const [open, setOpen] = React.useState(false);
+    const [value, setValue] = React.useState();
+
+    return (
+        <>
+            <ButtonMobile onClick={() => setOpen(true)} block={true}>
+                Выбрать месяц
+            </ButtonMobile>
+            <CalendarMonthPickerMobile
+                open={open}
+                onClose={() => setOpen(false)}
+                value={value}
+                onChange={setValue}
+            />
+        </>
+    );
+});
+```

@@ -1,0 +1,54 @@
+import { ArgsTabs } from 'storybook/blocks';
+import { CalendarMonthPickerDesktop } from '../month-picker/Component.desktop';
+import { CalendarMonthPickerMobile } from '../month-picker/Component.mobile';
+import { CalendarMonthPicker } from '../month-picker/Component.responsive';
+
+## Подключение
+
+```jsx
+import { CalendarMonthPicker } from '@alfalab/core-components/calendar';
+import { CalendarMonthPickerDesktop } from '@alfalab/core-components/calendar/desktop';
+import { CalendarMonthPickerMobile } from '@alfalab/core-components/calendar/mobile';
+```
+
+Из индекса импортируется responsive версия компонента.
+
+## Значение
+
+`value` — timestamp любого дня месяца. В `onChange` приходит timestamp первого дня выбранного месяца
+(`00:00` по локальному времени), при сбросе в мобильной версии — `undefined`.
+`onChange` вызывается при клике по месяцу, а также при смене года (стрелками или из списка лет),
+если месяц уже выбран — выбранный месяц переносится в новый год.
+
+## Использование dataTestId
+
+В компоненте используются модификаторы для `dataTestId`:
+
+```jsx
+// desktop
+{
+    picker: dataTestId,
+    btnYear: `${dataTestId}-btn-year`,
+    btnPrevYear: `${dataTestId}-btn-prev-year`,
+    btnNextYear: `${dataTestId}-btn-next-year`,
+};
+
+// mobile
+{
+    modal: dataTestId,
+    picker: `${dataTestId}-calendar`,
+    btnApply: `${dataTestId}-btn-apply`,
+    btnReset: `${dataTestId}-btn-reset`,
+    btnCancel: `${dataTestId}-btn-cancel`,
+};
+```
+
+## Свойства
+
+<ArgsTabs
+    components={{
+        CalendarMonthPicker,
+        CalendarMonthPickerDesktop,
+        CalendarMonthPickerMobile,
+    }}
+/>

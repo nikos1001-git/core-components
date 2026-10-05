@@ -1,0 +1,98 @@
+import { Meta, Story, Markdown } from '@storybook/addon-docs';
+import { select, boolean } from '@storybook/addon-knobs';
+import { ComponentHeader, Tabs } from 'storybook/blocks';
+import { Button } from '@alfalab/core-components-button';
+import { CalendarMonthPickerDesktop } from '@alfalab/core-components-calendar/desktop';
+import { CalendarMonthPickerMobile } from '@alfalab/core-components-calendar/mobile';
+import {
+    getQueryParam,
+    stylesStringToObj,
+} from '@alfalab/core-components-screenshot-utils/screenshots-story/utils';
+
+import Changelog from '../../CHANGELOG.md?raw';
+import Description from './month-picker.description.mdx';
+import Development from './month-picker.development.mdx';
+
+<Meta
+    title='Components/CalendarMonthPicker'
+    component={CalendarMonthPickerDesktop}
+    id='CalendarMonthPicker'
+/>
+
+export const WRAPPER_STYLES = {
+    display: 'inline-block',
+    border: '1px solid var(--color-light-neutral-300)',
+    borderRadius: 'var(--calendar-popover-border-radius, var(--border-radius-16))',
+    boxShadow: 'var(--shadow-m)',
+    background: 'var(--color-light-base-bg-primary)',
+    margin: 'var(--gap-8)',
+};
+
+export const CURR_YEAR = new Date().getFullYear();
+
+{/* Canvas */}
+
+<Story name='CalendarMonthPicker'>
+    {React.createElement(() => {
+        const [open, setOpen] = React.useState(false);
+        const [value, setValue] = React.useState();
+        const device = select('device', ['desktop', 'mobile'], 'desktop');
+        const withLimits = boolean('minDate / maxDate', false);
+        const limits = withLimits
+            ? {
+                  minDate: new Date(CURR_YEAR - 2, 2, 1).getTime(),
+                  maxDate: new Date().getTime(),
+              }
+            : {};
+
+        if (device === 'mobile') {
+            return (
+                <>
+                    <Button onClick={() => setOpen(true)}>Выбрать месяц</Button>
+                    <CalendarMonthPickerMobile
+                        open={open}
+                        onClose={() => setOpen(false)}
+                        onBack={() => setOpen(false)}
+                        value={value}
+                        onChange={setValue}
+                        hasBackButton={boolean('hasBackButton', false)}
+                        {...limits}
+                    />
+                </>
+            );
+        }
+
+        return (
+            <div
+                style={{
+                    display: 'inline-block',
+                    background: 'var(--color-light-base-bg-primary)',
+                    ...stylesStringToObj(getQueryParam('wrapperStyles')),
+                }}
+            >
+                <div style={WRAPPER_STYLES}>
+                    <CalendarMonthPickerDesktop
+                        value={value}
+                        onChange={setValue}
+                        responsive={boolean('responsive', false)}
+                        {...limits}
+                    />
+                </div>
+            </div>
+        );
+    })}
+
+</Story>
+
+{/* Docs */}
+
+<ComponentHeader
+    name='CalendarMonthPicker'
+    children='Пресет календаря для выбора месяца и года без выбора дня. Подходит для фильтров по месяцам.'
+/>
+
+<Tabs
+    description={<Description />}
+    development={<Development />}
+    changelog={<Markdown>{Changelog}</Markdown>}
+/>

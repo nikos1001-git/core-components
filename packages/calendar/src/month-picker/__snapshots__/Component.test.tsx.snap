@@ -1,0 +1,246 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`CalendarMonthPicker Desktop should match snapshot 1`] = `
+<div>
+  <div
+    class="cc-calendar component"
+    tabindex="-1"
+  >
+    <div
+      class="header"
+    >
+      <button
+        aria-label="Предыдущий год"
+        class="component text size-48 hug size-48 component text component text cc-icon-button primary component component border_32"
+        type="button"
+      >
+        <span
+          class="label stretchText"
+        >
+          <span
+            class="iconWrapper size-32 center"
+          >
+            <svg
+              class="icon"
+              fill="currentColor"
+              focusable="false"
+              height="24"
+              role="img"
+              viewBox="0 0 24 24"
+              width="24"
+            >
+              <path
+                d="M10 12l5.5 5.5L14 19l-7-7 7-7 1.5 1.5L10 12z"
+              />
+            </svg>
+          </span>
+        </span>
+      </button>
+      <button
+        aria-expanded="false"
+        aria-label="2020 год, выбрать год"
+        aria-live="polite"
+        class="component text size-32 hug size-32 component text component text yearButton"
+        type="button"
+      >
+        <span
+          class="label stretchText"
+        >
+          2020
+        </span>
+      </button>
+      <button
+        aria-label="Следующий год"
+        class="component text size-48 hug size-48 component text component text cc-icon-button primary component component border_32"
+        type="button"
+      >
+        <span
+          class="label stretchText"
+        >
+          <span
+            class="iconWrapper size-32 center"
+          >
+            <svg
+              class="icon"
+              fill="currentColor"
+              focusable="false"
+              height="24"
+              role="img"
+              viewBox="0 0 24 24"
+              width="24"
+            >
+              <path
+                d="M14 12l-5.5 5.5L10 19l7-7-7-7-1.5 1.5L14 12z"
+              />
+            </svg>
+          </span>
+        </span>
+      </button>
+    </div>
+    <div
+      class="body"
+    >
+      <div
+        class="grid"
+      >
+        <button
+          aria-selected="false"
+          class="component text size-40 hug size-40 component text component text button default item"
+          data-date="1577836800000"
+          tabindex="-1"
+          type="button"
+        >
+          <span
+            class="label stretchText"
+          >
+            Январь
+          </span>
+        </button>
+        <button
+          aria-selected="false"
+          class="component text size-40 hug size-40 component text component text button default item"
+          data-date="1580515200000"
+          tabindex="-1"
+          type="button"
+        >
+          <span
+            class="label stretchText"
+          >
+            Февраль
+          </span>
+        </button>
+        <button
+          aria-selected="false"
+          class="component text size-40 hug size-40 component text component text button default item"
+          data-date="1583020800000"
+          tabindex="-1"
+          type="button"
+        >
+          <span
+            class="label stretchText"
+          >
+            Март
+          </span>
+        </button>
+        <button
+          aria-selected="false"
+          class="component text size-40 hug size-40 component text component text button default item"
+          data-date="1585699200000"
+          tabindex="-1"
+          type="button"
+        >
+          <span
+            class="label stretchText"
+          >
+            Апрель
+          </span>
+        </button>
+        <button
+          aria-selected="false"
+          class="component text size-40 hug size-40 component text component text button default item"
+          data-date="1588291200000"
+          tabindex="-1"
+          type="button"
+        >
+          <span
+            class="label stretchText"
+          >
+            Май
+          </span>
+        </button>
+        <button
+          aria-selected="false"
+          class="component text size-40 hug size-40 component text component text button default item"
+          data-date="1590969600000"
+          tabindex="-1"
+          type="button"
+        >
+          <span
+            class="label stretchText"
+          >
+            Июнь
+          </span>
+        </button>
+        <button
+          aria-selected="false"
+          class="component text size-40 hug size-40 component text component text button default item"
+          data-date="1593561600000"
+          tabindex="-1"
+          type="button"
+        >
+          <span
+            class="label stretchText"
+          >
+            Июль
+          </span>
+        </button>
+        <button
+          aria-selected="false"
+          class="component text size-40 hug size-40 component text component text button default item"
+          data-date="1596240000000"
+          tabindex="-1"
+          type="button"
+        >
+          <span
+            class="label stretchText"
+          >
+            Август
+          </span>
+        </button>
+        <button
+          aria-selected="false"
+          class="component text size-40 hug size-40 component text component text button default item"
+          data-date="1598918400000"
+          tabindex="-1"
+          type="button"
+        >
+          <span
+            class="label stretchText"
+          >
+            Сентябрь
+          </span>
+        </button>
+        <button
+          aria-selected="false"
+          class="component text size-40 hug size-40 component text component text button default item"
+          data-date="1601510400000"
+          tabindex="-1"
+          type="button"
+        >
+          <span
+            class="label stretchText"
+          >
+            Октябрь
+          </span>
+        </button>
+        <button
+          aria-selected="true"
+          class="component text size-40 hug size-40 component text component text button selected item"
+          data-date="1604188800000"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="label stretchText"
+          >
+            Ноябрь
+          </span>
+        </button>
+        <button
+          aria-selected="false"
+          class="component text size-40 hug size-40 component text component text button default item"
+          data-date="1606780800000"
+          tabindex="-1"
+          type="button"
+        >
+          <span
+            class="label stretchText"
+          >
+            Декабрь
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
