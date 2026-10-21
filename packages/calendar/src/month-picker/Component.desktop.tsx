@@ -1,13 +1,10 @@
 import React, { forwardRef, useMemo, useRef, useState } from 'react';
 import cn from 'classnames';
-import { endOfDay, isSameMonth, isSameYear, setYear, startOfDay } from 'date-fns';
+import { endOfDay, isSameMonth, isSameYear, startOfDay } from 'date-fns';
 
-import { ButtonDesktop } from '@alfalab/core-components-button/desktop';
-import { IconButton } from '@alfalab/core-components-icon-button';
 import { getDataTestId, hooks } from '@alfalab/core-components-shared';
 import { useDidUpdateEffect, useLayoutEffect_SAFE_FOR_SSR } from '@alfalab/hooks';
-import { ChevronLeftMIcon } from '@alfalab/icons-glyph/ChevronLeftMIcon';
-import { ChevronRightMIcon } from '@alfalab/icons-glyph/ChevronRightMIcon';
+import { ChevronDownCompactSIcon } from '@alfalab/icons-glyph/ChevronDownCompactSIcon';
 
 import { SelectButton } from '../components/select-button';
 import { type Month } from '../typings';
@@ -65,33 +62,19 @@ export const CalendarMonthPickerDesktop = forwardRef<
             limitMonth(selected ?? Date.now(), minDateTimestamp, maxDateTimestamp),
         );
 
-        const emitChange = (month: Date | number) => {
-            if (onChange) {
-                onChange(limitMonth(month, minDateTimestamp, maxDateTimestamp).getTime());
-            }
-        };
-
-        // Если месяц выбран, он переезжает в новый год вместе с переключением года
-        const changeYear = (newYear: number) => {
-            setActiveMonth(
-                limitMonth(setYear(activeMonth, newYear), minDateTimestamp, maxDateTimestamp),
-            );
-
-            if (selected) {
-                emitChange(setYear(selected, newYear));
-            }
-        };
-
         const handleMonthChange = (timestamp: number) => {
+            setActiveMonth(new Date(timestamp));
+
+            // Выбор года только открывает его месяцы — выбранный месяц в новый год не переносится
             if (view === 'years') {
-                changeYear(new Date(timestamp).getFullYear());
                 setView('months');
 
                 return;
             }
 
-            setActiveMonth(new Date(timestamp));
-            emitChange(timestamp);
+            if (onChange) {
+                onChange(limitMonth(timestamp, minDateTimestamp, maxDateTimestamp).getTime());
+            }
         };
 
         const { months, years, getMonthProps, getYearProps, getRootProps } = useCalendar({
@@ -105,15 +88,9 @@ export const CalendarMonthPickerDesktop = forwardRef<
         });
 
         const year = activeMonth.getFullYear();
-        const canSetPrevYear = !minDate || year > minDate.getFullYear();
-        const canSetNextYear = !maxDate || year < maxDate.getFullYear();
 
         const isSelectedMonth = (month: Month) =>
             Boolean(selected && isSameMonth(selected, month.date));
-
-        const handlePrevYearClick = () => changeYear(year - 1);
-
-        const handleNextYearClick = () => changeYear(year + 1);
 
         const handleYearSelectorClick = () => setView(view === 'years' ? 'months' : 'years');
 
@@ -147,40 +124,20 @@ export const CalendarMonthPickerDesktop = forwardRef<
                 })}
                 data-test-id={dataTestId}
             >
-                <div className={styles.header}>
-                    {view === 'months' && (
-                        <IconButton
-                            size={32}
-                            icon={ChevronLeftMIcon}
-                            onClick={handlePrevYearClick}
-                            disabled={!canSetPrevYear}
-                            aria-label='Предыдущий год'
-                            dataTestId={getDataTestId(dataTestId, 'btn-prev-year')}
-                        />
-                    )}
-                    <ButtonDesktop
-                        view='text'
-                        size={32}
-                        className={styles.yearButton}
-                        onClick={handleYearSelectorClick}
-                        aria-expanded={view === 'years'}
-                        aria-label={`${year} год, выбрать год`}
-                        aria-live='polite'
-                        dataTestId={getDataTestId(dataTestId, 'btn-year')}
-                    >
+                <SelectButton
+                    view='filled'
+                    className={styles.yearSelect}
+                    onClick={handleYearSelectorClick}
+                    aria-expanded={view === 'years'}
+                    aria-label={`${year} год, выбрать год`}
+                    aria-live='polite'
+                    data-test-id={getDataTestId(dataTestId, 'btn-year')}
+                >
+                    <span className={styles.yearSelectContent}>
                         {year}
-                    </ButtonDesktop>
-                    {view === 'months' && (
-                        <IconButton
-                            size={32}
-                            icon={ChevronRightMIcon}
-                            onClick={handleNextYearClick}
-                            disabled={!canSetNextYear}
-                            aria-label='Следующий год'
-                            dataTestId={getDataTestId(dataTestId, 'btn-next-year')}
-                        />
-                    )}
-                </div>
+                        <ChevronDownCompactSIcon className={styles.chevron} />
+                    </span>
+                </SelectButton>
 
                 <div
                     ref={bodyRef}

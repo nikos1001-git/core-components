@@ -4,7 +4,7 @@
 .component {
     display: flex;
     flex-direction: column;
-    gap: var(--gap-12);
+    gap: var(--gap-16);
     width: var(--calendar-width);
     padding: var(--gap-16);
     box-sizing: border-box;
@@ -19,20 +19,24 @@
     }
 }
 
-.header {
-    display: flex;
-    align-items: center;
-    gap: var(--gap-8);
-    min-height: var(--gap-40);
-    padding: var(--gap-4) var(--gap-0);
-    box-sizing: border-box;
+:global(.cc-calendar) .yearSelect.yearSelect.yearSelect {
+    @mixin paragraph_component_primary;
+
+    width: 100%;
+    flex-shrink: 0;
+    border-radius: var(--calendar-select-button-border-radius);
 }
 
-:global(.cc-calendar) .header .yearButton {
-    @mixin accent_primary_large;
+.yearSelectContent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
 
-    flex: 1 1 0;
-    min-width: 0;
+.chevron {
+    flex-shrink: 0;
+    margin-left: var(--gap-12);
 }
 
 /* 4 ряда по 40px с отступами 8px — высота сетки месяцев, список лет прокручивается в ней же */

@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 
 import { MONTHS } from '../utils';
 
 import { CalendarMonthPickerDesktop } from './Component.desktop';
 import { CalendarMonthPickerMobile } from './Component.mobile';
-import { type CalendarMonthPickerDesktopProps } from './typings';
 
 describe('CalendarMonthPicker', () => {
     Object.defineProperty(window, 'matchMedia', {
@@ -26,21 +25,6 @@ describe('CalendarMonthPicker', () => {
     const currentYear = new Date().getFullYear();
     const getButton = (name: string) => screen.getByRole('button', { name });
 
-    const ControlledPicker = (props: CalendarMonthPickerDesktopProps) => {
-        const [month, setMonth] = useState(props.value);
-
-        return (
-            <CalendarMonthPickerDesktop
-                {...props}
-                value={month}
-                onChange={(newMonth) => {
-                    setMonth(newMonth);
-                    props.onChange?.(newMonth);
-                }}
-            />
-        );
-    };
-
     describe('Desktop', () => {
         it('should match snapshot', () => {
             expect(
@@ -53,8 +37,6 @@ describe('CalendarMonthPicker', () => {
 
             expect(screen.getByTestId('picker')).toBeInTheDocument();
             expect(screen.getByTestId('picker-btn-year')).toHaveTextContent(/^2020$/);
-            expect(screen.getByTestId('picker-btn-prev-year')).toBeInTheDocument();
-            expect(screen.getByTestId('picker-btn-next-year')).toBeInTheDocument();
         });
 
         it('should set custom class', () => {
@@ -97,47 +79,6 @@ describe('CalendarMonthPicker', () => {
             expect(onChange).toHaveBeenCalledWith(new Date(2020, 2, 1).getTime());
         });
 
-        it('should switch only year with arrows when month is not selected', () => {
-            const onChange = jest.fn();
-
-            render(<CalendarMonthPickerDesktop onChange={onChange} dataTestId='picker' />);
-
-            fireEvent.click(screen.getByTestId('picker-btn-prev-year'));
-
-            expect(screen.getByTestId('picker-btn-year')).toHaveTextContent(
-                new RegExp(`^${currentYear - 1}$`),
-            );
-            expect(onChange).not.toHaveBeenCalled();
-
-            fireEvent.click(getButton('Май'));
-
-            expect(onChange).toHaveBeenCalledWith(new Date(currentYear - 1, 4, 1).getTime());
-        });
-
-        it('should keep selected month when year is switched with arrows', () => {
-            const onChange = jest.fn();
-
-            render(
-                <ControlledPicker
-                    value={new Date(2026, 9, 1).getTime()}
-                    onChange={onChange}
-                    dataTestId='picker'
-                />,
-            );
-
-            fireEvent.click(screen.getByTestId('picker-btn-prev-year'));
-
-            expect(onChange).toHaveBeenLastCalledWith(new Date(2025, 9, 1).getTime());
-            expect(screen.getByTestId('picker-btn-year')).toHaveTextContent(/^2025$/);
-            expect(getButton('Октябрь')).toHaveAttribute('aria-selected', 'true');
-
-            fireEvent.click(screen.getByTestId('picker-btn-next-year'));
-            fireEvent.click(screen.getByTestId('picker-btn-next-year'));
-
-            expect(onChange).toHaveBeenLastCalledWith(new Date(2027, 9, 1).getTime());
-            expect(screen.getByTestId('picker-btn-year')).toHaveTextContent(/^2027$/);
-        });
-
         describe('years list', () => {
             it('should open years list by click on year', () => {
                 render(<CalendarMonthPickerDesktop value={value} dataTestId='picker' />);
@@ -147,8 +88,6 @@ describe('CalendarMonthPicker', () => {
                 fireEvent.click(yearButton);
 
                 expect(yearButton).toHaveAttribute('aria-expanded', 'true');
-                expect(screen.queryByTestId('picker-btn-prev-year')).not.toBeInTheDocument();
-                expect(screen.queryByTestId('picker-btn-next-year')).not.toBeInTheDocument();
                 expect(screen.queryByRole('button', { name: 'Март' })).not.toBeInTheDocument();
                 expect(getButton('2020')).toHaveAttribute('aria-selected', 'true');
             });
@@ -162,21 +101,33 @@ describe('CalendarMonthPicker', () => {
                 expect(getButton('Март')).toBeInTheDocument();
             });
 
-            it('should move selected month to chosen year', () => {
+            it('should not keep selected month when year is changed', () => {
                 const onChange = jest.fn();
 
-                render(<ControlledPicker value={value} onChange={onChange} dataTestId='picker' />);
+                render(
+                    <CalendarMonthPickerDesktop
+                        value={value}
+                        onChange={onChange}
+                        dataTestId='picker'
+                    />,
+                );
 
                 fireEvent.click(screen.getByTestId('picker-btn-year'));
                 fireEvent.click(getButton('2010'));
 
-                expect(onChange).toHaveBeenCalledWith(new Date(2010, 10, 1).getTime());
+                expect(onChange).not.toHaveBeenCalled();
                 expect(screen.getByTestId('picker-btn-year')).toHaveTextContent(/^2010$/);
                 expect(screen.getByTestId('picker-btn-year')).toHaveAttribute(
                     'aria-expanded',
                     'false',
                 );
-                expect(getButton('Ноябрь')).toHaveAttribute('aria-selected', 'true');
+                MONTHS.forEach((month) =>
+                    expect(getButton(month)).toHaveAttribute('aria-selected', 'false'),
+                );
+
+                fireEvent.click(getButton('Май'));
+
+                expect(onChange).toHaveBeenCalledWith(new Date(2010, 4, 1).getTime());
             });
 
             it('should only open chosen year when month is not selected', () => {
@@ -210,28 +161,20 @@ describe('CalendarMonthPicker', () => {
                 expect(getButton('Декабрь')).not.toBeDisabled();
             });
 
-            it('should disable arrows on bound years and limit selected month', () => {
-                const onChange = jest.fn();
-
+            it('should disable months out of range in another year', () => {
                 render(
-                    <ControlledPicker
+                    <CalendarMonthPickerDesktop
                         value={value}
                         minDate={minDate}
                         maxDate={maxDate}
-                        onChange={onChange}
                         dataTestId='picker'
                     />,
                 );
 
-                expect(screen.getByTestId('picker-btn-prev-year')).toBeDisabled();
-                expect(screen.getByTestId('picker-btn-next-year')).not.toBeDisabled();
+                fireEvent.click(screen.getByTestId('picker-btn-year'));
+                fireEvent.click(getButton('2021'));
 
-                fireEvent.click(screen.getByTestId('picker-btn-next-year'));
-
-                // Ноябрь 2021 позже maxDate — выбирается последний доступный месяц
-                expect(onChange).toHaveBeenLastCalledWith(new Date(2021, 8, 1).getTime());
-                expect(screen.getByTestId('picker-btn-year')).toHaveTextContent(/^2021$/);
-                expect(screen.getByTestId('picker-btn-next-year')).toBeDisabled();
+                expect(getButton('Сентябрь')).not.toBeDisabled();
                 expect(getButton('Октябрь')).toBeDisabled();
             });
 

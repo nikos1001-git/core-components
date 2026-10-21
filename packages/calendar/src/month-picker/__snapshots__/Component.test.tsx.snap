@@ -6,77 +6,38 @@ exports[`CalendarMonthPicker Desktop should match snapshot 1`] = `
     class="cc-calendar component"
     tabindex="-1"
   >
-    <div
-      class="header"
+    <button
+      aria-expanded="false"
+      aria-label="2020 год, выбрать год"
+      aria-live="polite"
+      class="component text size-40 hug size-40 component text component text button filled yearSelect"
+      type="button"
     >
-      <button
-        aria-label="Предыдущий год"
-        class="component text size-48 hug size-48 component text component text cc-icon-button primary component component border_32"
-        type="button"
+      <span
+        class="label stretchText"
       >
         <span
-          class="label stretchText"
-        >
-          <span
-            class="iconWrapper size-32 center"
-          >
-            <svg
-              class="icon"
-              fill="currentColor"
-              focusable="false"
-              height="24"
-              role="img"
-              viewBox="0 0 24 24"
-              width="24"
-            >
-              <path
-                d="M10 12l5.5 5.5L14 19l-7-7 7-7 1.5 1.5L10 12z"
-              />
-            </svg>
-          </span>
-        </span>
-      </button>
-      <button
-        aria-expanded="false"
-        aria-label="2020 год, выбрать год"
-        aria-live="polite"
-        class="component text size-32 hug size-32 component text component text yearButton"
-        type="button"
-      >
-        <span
-          class="label stretchText"
+          class="yearSelectContent"
         >
           2020
-        </span>
-      </button>
-      <button
-        aria-label="Следующий год"
-        class="component text size-48 hug size-48 component text component text cc-icon-button primary component component border_32"
-        type="button"
-      >
-        <span
-          class="label stretchText"
-        >
-          <span
-            class="iconWrapper size-32 center"
+          <svg
+            class="chevron"
+            fill="currentColor"
+            focusable="false"
+            height="16"
+            role="img"
+            viewBox="0 0 16 16"
+            width="16"
           >
-            <svg
-              class="icon"
-              fill="currentColor"
-              focusable="false"
-              height="24"
-              role="img"
-              viewBox="0 0 24 24"
-              width="24"
-            >
-              <path
-                d="M14 12l-5.5 5.5L10 19l7-7-7-7-1.5 1.5L14 12z"
-              />
-            </svg>
-          </span>
+            <path
+              clip-rule="evenodd"
+              d="M2.293 6.207l1.414-1.414L8 9.086l4.293-4.293 1.414 1.414L8 11.914 2.293 6.207z"
+              fill-rule="evenodd"
+            />
+          </svg>
         </span>
-      </button>
-    </div>
+      </span>
+    </button>
     <div
       class="body"
     >

@@ -17,8 +17,7 @@ import { CalendarMonthPickerMobile } from '@alfalab/core-components/calendar/mob
 
 `value` — timestamp любого дня месяца. В `onChange` приходит timestamp первого дня выбранного месяца
 (`00:00` по локальному времени), при сбросе в мобильной версии — `undefined`.
-`onChange` вызывается при клике по месяцу, а также при смене года (стрелками или из списка лет),
-если месяц уже выбран — выбранный месяц переносится в новый год.
+`onChange` вызывается только при клике по месяцу. Смена года в селекте значение не меняет.
 
 ## Использование dataTestId
 
@@ -29,8 +28,6 @@ import { CalendarMonthPickerMobile } from '@alfalab/core-components/calendar/mob
 {
     picker: dataTestId,
     btnYear: `${dataTestId}-btn-year`,
-    btnPrevYear: `${dataTestId}-btn-prev-year`,
-    btnNextYear: `${dataTestId}-btn-next-year`,
 };
 
 // mobile
