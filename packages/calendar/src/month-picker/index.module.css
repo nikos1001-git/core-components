@@ -36,7 +36,10 @@
 
 .chevron {
     flex-shrink: 0;
+    width: 18px;
+    height: 18px;
     margin-left: var(--gap-12);
+    color: var(--color-light-text-secondary);
 }
 
 /* 4 ряда по 40px с отступами 8px — высота сетки месяцев, список лет прокручивается в ней же */
